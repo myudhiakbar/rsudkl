@@ -9,7 +9,7 @@ body {
 	min-height: 100vh;
 	background-image:
 		linear-gradient(rgba(247, 250, 252, 0.85), rgba(247, 250, 252, 0.85)),
-		url("assets/beranda1.png");
+		url("beranda1.png");
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -55,7 +55,7 @@ body {
 }
 
 .card-header {
-	padding: 1.5rem 2rem;
+	padding: 2rem;
 	border-bottom: 1px solid #e5e7eb;
 	display: flex;
 	justify-content: center;
@@ -63,7 +63,7 @@ body {
 }
 
 .total-text {
-	font-size: 1.8rem;
+	font-size: 2.8rem;
 	color: #6b7280;
 }
 
@@ -293,7 +293,7 @@ body {
 
 @media (min-width: 640px) {
 	.grid-container {
-		grid-template-columns: repeat(2, 1fr);
+		grid-template-columns: repeat(3, 1fr);
 	}
 }
 
