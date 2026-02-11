@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rumah Sehat untuk Jakarta - RSUD Tugu Koja</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome untuk ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Owl Carousel -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .sidebar-active {
+            background-color: #e6f7ff;
+            border-left: 4px solid #1890ff;
+            color: #1890ff;
+            font-weight: 600;
+        }
+
+        .news-card:hover {
+            transform: translateY(-4px);
+            transition: transform 0.3s ease;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <div class="flex min-h-screen">
+        <!-- Overlay -->
+        <div id="overlay" class="fixed inset-0 bg-black/50 hidden z-40 lg:hidden"></div>
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 w-72 lg:w-64 bg-white shadow-md z-50 
+           transform -translate-x-full lg:translate-x-0 
+           transition-transform duration-300 ease-in-out">
+
+            <div class="p-6 h-full overflow-y-auto">
+
+                <!-- Header Sidebar (Mobile Only) -->
+                <div class="flex justify-between items-center mb-6 lg:hidden">
+                    <h1 class="text-xl font-bold text-blue-800">LOGO RSUDKL</h1>
+                    <button id="btnCloseSidebar" class="p-2 rounded-lg hover:bg-gray-100">
+                        <i class="fas fa-times text-gray-700"></i>
+                    </button>
+                </div>
+
+                <h1 class="text-2xl font-bold text-blue-800 mb-8">LOGO RSUDKL</h1>
+
+                <div class="mb-8">
+                    <h3 class="text-gray-500 text-sm font-semibold uppercase tracking-wider mb-4">MENU UTAMA</h3>
+                    <ul class="space-y-2">
+                        <!-- BERANDA -->
+                        <li>
+                            <a href="#" class="flex items-center p-3 text-gray-700 hover:bg-blue-50 rounded-lg">
+                                <i class="fas fa-home mr-3 text-blue-600"></i>
+                                <span>Beranda</span>
+                            </a>
+                        </li>
+
+                        <!-- PROFILE -->
+                        <li>
+                            <button type="button"
+                                class="dropdown-btn flex items-center justify-between w-full p-3 text-gray-700 hover:bg-blue-50 rounded-lg">
+                                <div class="flex items-center">
+                                    <i class="fas fa-user mr-3"></i>
+                                    <span>Profil</span>
+                                </div>
+                                <i class="fas fa-chevron-down text-sm transition-transform"></i>
+                            </button>
+
+                            <ul class="dropdown hidden ml-10 mt-2 space-y-2">
+                                <li><a href="#" class="block p-2 text-gray-600 hover:text-blue-600">Sejarah</a></li>
+                                <li><a href="#" class="block p-2 text-gray-600 hover:text-blue-600">Visi & Misi</a></li>
+                                <li><a href="#" class="block p-2 text-gray-600 hover:text-blue-600">Struktur
+                                        Organisasi</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- LAYANAN -->
+                        <li>
+                            <button type="button"
+                                class="dropdown-btn flex items-center justify-between w-full p-3 text-gray-700 hover:bg-blue-50 rounded-lg">
+                                <div class="flex items-center">
+                                    <i class="fas fa-stethoscope mr-3"></i>
+                                    <span>Layanan</span>
+                                </div>
+                                <i class="fas fa-chevron-down text-sm transition-transform"></i>
+                            </button>
+
+                            <ul class="dropdown hidden ml-10 mt-2 space-y-2">
+                                <li><a href="#" class="block p-2 text-gray-600 hover:text-blue-600">Rawat Jalan</a></li>
+                                <li><a href="#" class="block p-2 text-gray-600 hover:text-blue-600">Rawat Inap</a></li>
+                                <li><a href="#" class="block p-2 text-gray-600 hover:text-blue-600">IGD</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- INFORMASI -->
+                        <li>
+                            <button type="button"
+                                class="dropdown-btn flex items-center justify-between w-full p-3 text-gray-700 hover:bg-blue-50 rounded-lg">
+                                <div class="flex items-center">
+                                    <i class="fas fa-info-circle mr-3"></i>
+                                    <span>Informasi</span>
+                                </div>
+                                <i class="fas fa-chevron-down text-sm transition-transform"></i>
+                            </button>
+
+                            <ul class="dropdown hidden ml-10 mt-2 space-y-2">
+                                <li><a href="#" class="block p-2 text-gray-600 hover:text-blue-600">Berita</a></li>
+                                <li><a href="#" class="block p-2 text-gray-600 hover:text-blue-600">Pengumuman</a></li>
+                                <li><a href="#" class="block p-2 text-gray-600 hover:text-blue-600">Agenda</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- STANDAR PELAYANAN -->
+                        <li>
+                            <button type="button"
+                                class="dropdown-btn flex items-center justify-between w-full p-3 text-gray-700 hover:bg-blue-50 rounded-lg">
+                                <div class="flex items-center">
+                                    <i class="fas fa-clipboard-check mr-3"></i>
+                                    <span class="flex-1 text-left">Standar Pelayanan</span>
+                                </div>
+                                <i class="fas fa-chevron-down text-sm transition-transform"></i>
+                            </button>
+
+                            <ul class="dropdown hidden ml-10 mt-2 space-y-2">
+                                <li><a href="#" class="block p-2 text-gray-600 hover:text-blue-600">Maklumat</a></li>
+                                <li><a href="#" class="block p-2 text-gray-600 hover:text-blue-600">SOP</a></li>
+                                <li><a href="#" class="block p-2 text-gray-600 hover:text-blue-600">Survey Kepuasan</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center p-3 text-gray-700 hover:bg-blue-50 rounded-lg">
+                                <i class="fas fa-calendar-alt mr-3"></i>
+                                <span>Janji Temu</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center p-3 text-gray-700 hover:bg-blue-50 rounded-lg">
+                                <i class="fas fa-phone-alt mr-3"></i>
+                                <span>Kontak</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="border-t pt-6">
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <h4 class="font-semibold text-blue-800 mb-2">Call Center</h4>
+                        <div class="space-y-1">
+                            <p class="text-blue-700 flex items-center">
+                                <i class="fas fa-phone mr-2 text-sm"></i>
+                                <span>(021) 224 35 737</span>
+                            </p>
+                            <p class="text-blue-700 flex items-center">
+                                <i class="fas fa-phone mr-2 text-sm"></i>
+                                <span>(021) 260 61 110</span>
+                            </p>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-3">Untuk call center dan informasi</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1">
+            <!-- Header -->
+            <header class="sticky top-0 z-50 bg-gradient-to-r from-blue-700 to-green-500 shadow-sm px-4 py-2 flex justify-between items-center">
+
+                <div class="flex items-center">
+                    <button id="btnToggleSidebar" class="p-2 rounded-lg hover:bg-blue-600">
+                        <i class="fas fa-bars text-white"></i>
+                    </button>
+
+                    <div class="ml-4">
+                        <h2 class="text-lg font-semibold text-white">Beranda</h2>
+                    </div>
+                </div>
+
+            </header>
+
+            <!-- Content Area -->
+            <div class="p-6 space-y-12">
+
+                <!-- ================= HERO SECTION ================= -->
+                <section class="grid grid-cols-1 gap-6">
+                    <div class="relative rounded-2xl overflow-hidden shadow-lg" id="carousel">
+                        <div class="relative h-72 md:h-96">
+                            <img src="https://rsudtugukoja.com/assets/img/slide/1676968107-webjpg.jpg"
+                                class="carousel-item absolute inset-0 w-full h-full object-cover opacity-100 transition-opacity duration-700">
+                            <img src="https://rsudtugukoja.com/assets/img/slide/1673421447-webjpg.jpg"
+                                class="carousel-item absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-700">
+                            <img src="https://rsudtugukoja.com/assets/img/slide/1647502136-ppidjpg.jpg"
+                                class="carousel-item absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-700">
+                            <img src="https://rsudtugukoja.com/assets/img/slide/1647575133-wbk_wbbmjpg.jpg"
+                                class="carousel-item absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-700">
+                        </div>
+
+                        <button onclick="prevSlide()"
+                            class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full">‹</button>
+                        <button onclick="nextSlide()"
+                            class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full">›</button>
+                    </div>
+                </section>
+
+                <!-- ================= WIDGET LAYANAN ================= -->
+                <section class="mt-6">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+                        <a href="https://rsudtugukoja.com/category/Rajal"
+                            class="bg-yellow-400 rounded-2xl p-5 text-white shadow hover:scale-[1.03] transition">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h5 class="font-bold text-lg">Rawat Jalan</h5>
+                                    <p class="text-sm opacity-90">Informasi Layanan<br>Rawat Jalan</p>
+                                </div>
+                                <i class="fas fa-laptop-medical text-3xl opacity-80"></i>
+                            </div>
+                        </a>
+
+                        <a href="https://rsudtugukoja.com/category/IGD"
+                            class="bg-red-500 rounded-2xl p-5 text-white shadow hover:scale-[1.03] transition">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h5 class="font-bold text-lg">IGD</h5>
+                                    <p class="text-sm opacity-90">Informasi<br>Layanan IGD</p>
+                                </div>
+                                <i class="fas fa-clinic-medical text-3xl opacity-80"></i>
+                            </div>
+                        </a>
+
+                        <a href="https://rsudtugukoja.com/category/Ranap"
+                            class="bg-blue-500 rounded-2xl p-5 text-white shadow hover:scale-[1.03] transition">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h5 class="font-bold text-lg">Rawat Inap</h5>
+                                    <p class="text-sm opacity-90">Informasi Layanan<br>Rawat Inap</p>
+                                </div>
+                                <i class="fas fa-first-aid text-3xl opacity-80"></i>
+                            </div>
+                        </a>
+
+                        <a href="https://rsudtugukoja.com/category/Penunjang"
+                            class="bg-green-500 rounded-2xl p-5 text-white shadow hover:scale-[1.03] transition">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h5 class="font-bold text-lg">Penunjang</h5>
+                                    <p class="text-sm opacity-90">Informasi Layanan<br>Penunjang</p>
+                                </div>
+                                <i class="fas fa-flask text-3xl opacity-80"></i>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- ================= ZONA INTEGRITAS ================= -->
+                <!-- <section class="bg-gradient-to-r from-green-600 to-green-800 rounded-xl p-5 text-white text-center">
+                    <div class="flex items-center justify-center gap-4">
+                        <i class="fas fa-award text-2xl"></i>
+                        <p class="font-semibold">
+                            MEMASUKI WILAYAH PEMBANGUNAN ZONA INTEGRITAS (ZI), MENUJU WBK / WBBM
+                        </p>
+                    </div>
+                </section> -->
+
+                <!-- ================= BERITA & PENGUMUMAN ================= -->
+                <section>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">
+                        Berita & Pengumuman Terbaru
+                    </h2>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                        <!-- News Card -->
+                        <a href="#"
+                            class="group bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
+                            <img src="https://rsudtugukoja.com/assets/img/slide/1676968107-webjpg.jpg"
+                                alt="Pengguna Kereta Berhubung"
+                                class="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-gray-800 group-hover:text-blue-600 transition">
+                                    Pengguna Kereta Berhubung
+                                </h3>
+                            </div>
+                        </a>
+
+                        <!-- News Card -->
+                        <a href="#"
+                            class="group bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
+                            <img src="https://rsudtugukoja.com/assets/img/slide/1673421447-webjpg.jpg"
+                                alt="Penghargaan Inovasi Tinggi"
+                                class="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-gray-800 group-hover:text-blue-600 transition">
+                                    Penghargaan Inovasi Tinggi
+                                </h3>
+                            </div>
+                        </a>
+
+                        <!-- News Card -->
+                        <a href="#"
+                            class="group bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
+                            <img src="https://rsudtugukoja.com/assets/img/slide/1647502136-ppidjpg.jpg"
+                                alt="Informasi PPID"
+                                class="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-gray-800 group-hover:text-blue-600 transition">
+                                    Informasi PPID RSUD
+                                </h3>
+                            </div>
+                        </a>
+
+                        <!-- News Card -->
+                        <a href="#"
+                            class="group bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
+                            <img src="https://rsudtugukoja.com/assets/img/slide/1647575133-wbk_wbbmjpg.jpg"
+                                alt="Zona Integritas"
+                                class="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-gray-800 group-hover:text-blue-600 transition">
+                                    Zona Integritas WBK / WBBM
+                                </h3>
+                            </div>
+                        </a>
+
+                    </div>
+                </section>
+
+                <!-- ================= INFORMASI LAYANAN ================= -->
+                <section class="bg-white rounded-xl shadow-md p-6">
+                    <h2 class="text-xl font-bold mb-6">Informasi Layanan</h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h3 class="font-semibold mb-2">Dokter Spesialis</h3>
+                            <p class="text-sm text-gray-600">Konsultasi dengan dokter spesialis terbaik.</p>
+                        </div>
+
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <h3 class="font-semibold mb-2">UGD 24 Jam</h3>
+                            <p class="text-sm text-gray-600">Layanan gawat darurat siap 24 jam.</p>
+                        </div>
+
+                        <div class="bg-purple-50 p-4 rounded-lg">
+                            <h3 class="font-semibold mb-2">Laboratorium</h3>
+                            <p class="text-sm text-gray-600">Pemeriksaan lengkap & akurat.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= INFO GRID 3 KOLOM ================= -->
+                <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                    <!-- JAM OPERASIONAL -->
+                    <div class="bg-white rounded-xl shadow-md p-6">
+                        <h2 class="text-xl font-bold mb-4">Jam Operasional</h2>
+                        <div class="space-y-2 text-gray-700 text-sm">
+                            <div class="flex justify-between">
+                                <span>Senin – Jumat</span>
+                                <b>07:00 – 21:00</b>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Sabtu</span>
+                                <b>07:00 – 17:00</b>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Minggu & Libur</span>
+                                <b>08:00 – 15:00</b>
+                            </div>
+                        </div>
+                        <div class="mt-4 bg-yellow-50 p-3 rounded-lg text-xs">
+                            🚑 UGD buka 24 jam setiap hari
+                        </div>
+                    </div>
+
+                    <!-- LINK CEPAT -->
+                    <div class="bg-white rounded-xl shadow-md p-6">
+                        <h2 class="text-xl font-bold mb-4">Link Cepat</h2>
+                        <div class="grid grid-cols-1 gap-3 text-sm">
+                            <a href="#" class="p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                                📋 Registrasi Online
+                            </a>
+                            <a href="#" class="p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                                ⏳ Cek Status Antrian
+                            </a>
+                            <a href="#" class="p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                                📄 Download Formulir
+                            </a>
+                            <a href="#" class="p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                                📍 Lokasi & Akses
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- STATISTIK BULAN INI -->
+                    <div class="bg-gradient-to-r from-blue-500 to-blue-700 rounded-xl p-6 text-white">
+                        <h2 class="text-xl font-bold mb-4">Statistik Bulan Ini</h2>
+                        <ul class="space-y-3 text-m">
+                            <li class="flex justify-between">
+                                <span>Rawat Jalan</span>
+                                <b>1.248</b>
+                            </li>
+                            <li class="flex justify-between">
+                                <span>Rawat Inap</span>
+                                <b>342</b>
+                            </li>
+                            <li class="flex justify-between">
+                                <span>Kunjungan UGD</span>
+                                <b>567</b>
+                            </li>
+                        </ul>
+                        <p class="text-m text-blue-100 mt-4 italic">
+                            Update terakhir: 10 Feb 2026
+                        </p>
+                    </div>
+                </section>
+            </div>
+
+            <!-- ================= FOOTER ================= -->
+            <footer class="bg-gradient-to-r from-blue-700 to-green-500 px-6 py-4 flex justify-between items-center">
+                <p class="text-m text-white">© <span id="year">2026</span> RSUD Kebayoran Lama. All rights reserved.
+                </p>
+                <p class="text-m text-white">Version 1.0</p>
+            </footer>
+        </main>
+    </div>
+
+    <!-- JavaScript untuk interaksi sederhana -->
+    <script>
+        // Toggle sidebar pada mobile
+        const btnToggle = document.getElementById('btnToggleSidebar');
+        const btnClose = document.getElementById('btnCloseSidebar');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+
+        // buka sidebar
+        function openSidebar() {
+            sidebar.classList.remove('-translate-x-full');
+            overlay.classList.remove('hidden');
+        }
+
+        // tutup sidebar
+        function closeSidebar() {
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+        }
+
+        // toggle
+        btnToggle.addEventListener('click', function () {
+            if (window.innerWidth < 1024) {
+                openSidebar();
+            } else {
+                sidebar.classList.toggle('hidden');
+            }
+        });
+
+        btnClose.addEventListener('click', closeSidebar);
+        overlay.addEventListener('click', closeSidebar);
+
+        // resize behavior
+        window.addEventListener('resize', function () {
+            if (window.innerWidth >= 1024) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.add('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+            }
+        });
+
+        document.querySelectorAll('.dropdown-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const dropdown = this.nextElementSibling;
+                const icon = this.querySelector('.fa-chevron-down');
+
+                dropdown.classList.toggle('hidden');
+                icon.classList.toggle('rotate-180');
+            });
+        });
+
+        // Menambahkan efek hover pada kartu berita
+        document.querySelectorAll('.news-card').forEach(card => {
+            card.addEventListener('mouseenter', function () {
+                this.style.transform = 'translateY(-4px)';
+            });
+            card.addEventListener('mouseleave', function () {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        let index = 0;
+        const slides = document.querySelectorAll('.carousel-item');
+
+        function showSlide(i) {
+            slides.forEach((slide, idx) => {
+                slide.classList.toggle('opacity-100', idx === i);
+                slide.classList.toggle('opacity-0', idx !== i);
+            });
+        }
+
+        function nextSlide() {
+            index = (index + 1) % slides.length;
+            showSlide(index);
+        }
+
+        function prevSlide() {
+            index = (index - 1 + slides.length) % slides.length;
+            showSlide(index);
+        }
+
+        setInterval(nextSlide, 5000);
+    </script>
+</body>
+
+</html>
