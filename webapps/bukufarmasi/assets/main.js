@@ -581,8 +581,8 @@ function loadHistory() {
 
 /* ================= INIT ================= */
 document.addEventListener("DOMContentLoaded", () => {
-	loadComponent("nav-placeholder", "./components/nav.html");
-	loadComponent("footer-placeholder", "./components/footer.html", setFooterYear);
+	loadComponent("nav-placeholder", "bukufarmasi/components/nav.html");
+	loadComponent("footer-placeholder", "bukufarmasi/components/footer.html", setFooterYear);
 
 	const today = new Date().toISOString().split("T")[0];
 	transactionDate.value = today;
