@@ -26,7 +26,7 @@ function updateHeaderDateTime() {
 		.replace(/\./g, ":");
 
 	document.getElementById("currentDateTime").textContent =
-		`${hari}, ${tanggal} jam ${jam} WIB`;
+		`${hari}, ${tanggal} Jam ${jam} WIB`;
 }
 setInterval(updateHeaderDateTime, 1000);
 updateHeaderDateTime();

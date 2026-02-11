@@ -147,7 +147,7 @@ body {
 	}
 
 	.header p {
-		font-size: 1.2rem;
+		font-size: 1.4rem;
 		margin-top: 0.5rem;
 	}
 
@@ -173,15 +173,11 @@ body {
 	}
 
 	.patient-name {
-		font-size: 1.1rem;
-	}
-
-	.tindak-lanjut {
-		font-size: 1.1rem;
+		font-size: 1.2rem !important;
 	}
 
 	.triase-tag {
-		font-size: 1rem;
+		font-size: 1.1rem !important;
 		padding: 0.3rem 1rem;
 	}
 
@@ -190,7 +186,7 @@ body {
 	}
 
 	.footer {
-		font-size: 1rem;
+		font-size: 1.3rem !important;
 	}
 
 	/* Mengurangi padding */
@@ -230,6 +226,7 @@ body {
 	.tindak-lanjut {
 		line-height: 1.5;
 		margin-bottom: 0.5rem;
+		font-size: 1.4rem !important;
 	}
 
 	/* Membuat card lebih nyaman disentuh */
