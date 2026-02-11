@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Manajemen Data Pasien</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background-image:
+                linear-gradient(rgba(247, 250, 252, 0.85),
+                    rgba(247, 250, 252, 0.85)),
+                url("assets/beranda1.png") !important;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .loading {
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(59, 130, 246, 0.3);
+            border-radius: 50%;
+            border-top-color: #3b82f6;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-r from-blue-50 to-green-100">
+    <div class="w-full px-4 py-8">
+        <!-- Header -->
+        <header class="mt-4 mb-10 p-1 text-center">
+            <h1 class="text-5xl font-bold text-blue-900 mb-2">
+                Sistem Informasi Data Pasien IGD RSUD KL
+            </h1>
+            <p id="currentDateTime" class="text-2xl text-gray-500 mt-2"></p>
+        </header>
+
+        <main>
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="px-6 py-5 border-b flex justify-center items-center">
+                    <div class="text-xl text-gray-500">
+                        Total: <span id="totalRecords" class="font-bold">0</span> pasien
+                    </div>
+                </div>
+
+                <!-- Loading -->
+                <div id="loading" class="p-12 text-center">
+                    <div class="loading mx-auto mb-3"></div>
+                    <p class="text-gray-600">Memuat data...</p>
+                </div>
+
+                <!-- Empty -->
+                <div id="emptyState" class="hidden p-12 text-center">
+                    <i class="fas fa-clipboard-list text-gray-300 text-5xl mb-4"></i>
+                    <h3 class="text-lg font-medium text-gray-700 mb-2">Tidak ada data</h3>
+                    <p class="text-gray-500">Data pasien belum tersedia.</p>
+                </div>
+
+                <!-- Data -->
+                <div id="dataContainer" class="hidden p-6">
+                    <div id="historyList"
+                        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-6">
+                    </div>
+                </div>
+
+                <!-- Error -->
+                <div id="errorState" class="hidden p-12 text-center">
+                    <i class="fas fa-exclamation-triangle text-red-400 text-5xl mb-4"></i>
+                    <h3 class="text-lg font-medium text-gray-700 mb-2">Gagal memuat data</h3>
+                    <p class="text-gray-500 mb-6">Terjadi kesalahan saat mengambil data.</p>
+                    <button onclick="loadData()"
+                        class="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition">
+                        <i class="fas fa-redo mr-2"></i> Coba Lagi
+                    </button>
+                </div>
+
+            </div>
+        </main>
+
+        <footer class="mt-12 pt-6 border-t text-center text-gray-500 text-sm">
+            Dibuat dengan <i class="fas fa-heart"></i> <span id="year"></span>. All rights reserved
+        </footer>
+
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbxPjw0kwrhTgHEQ6vQboCMuhmbBwGixA-jzUCq0SQ6LXPKDyZtAWbA-yAjB9DLUkgsO/exec";
+
+        const loading = document.getElementById("loading");
+        const emptyState = document.getElementById("emptyState");
+        const errorState = document.getElementById("errorState");
+        const dataContainer = document.getElementById("dataContainer");
+        const historyList = document.getElementById("historyList");
+        const totalRecords = document.getElementById("totalRecords");
+
+        // FORMAT JAM PERIKSA
+        function updateHeaderDateTime() {
+            const now = new Date();
+
+            const hari = now.toLocaleDateString("id-ID", { weekday: "long" });
+            const tanggal = now.toLocaleDateString("id-ID", {
+                day: "2-digit",
+                month: "long",
+                year: "numeric"
+            });
+            const jam = now.toLocaleTimeString("id-ID", {
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit"
+            }).replace(/\./g, ':');
+
+            document.getElementById("currentDateTime").textContent = `${hari}, ${tanggal} jam ${jam} WIB`;
+        }
+        setInterval(updateHeaderDateTime, 1000);
+        updateHeaderDateTime();
+
+        document.getElementById("year").textContent = new Date().getFullYear();
+
+        function formatJamPeriksa(value) {
+            if (!value) return "-";
+
+            // Jika value berupa angka (serial Google Sheets)
+            if (typeof value === "number") {
+                const date = new Date(Math.round((value - 25569) * 86400 * 1000));
+                return date.toLocaleTimeString("id-ID", {
+                    hour: "2-digit",
+                    minute: "2-digit"
+                }) + " WIB";
+            }
+
+            // Jika value bisa diparse sebagai Date
+            if (!isNaN(Date.parse(value))) {
+                const date = new Date(value);
+                return date.toLocaleTimeString("id-ID", {
+                    hour: "2-digit",
+                    minute: "2-digit"
+                }) + " WIB";
+            }
+
+            // Jika format string jam (HH:mm atau HH:mm:ss)
+            if (typeof value === "string" && value.includes(":")) {
+                return value.substring(0, 5) + " WIB";
+            }
+
+            return value;
+        }
+
+        // TRIAGE COLOR MAPPING
+        function getTriaseClass(triase) {
+            switch (triase) {
+                case "Tidak Gawat dan Tidak Darurat":
+                    return "bg-green-50 border-green-400 text-green-900";
+                case "Gawat Tapi Tidak Darurat":
+                    return "bg-yellow-50 border-yellow-400 text-yellow-900";
+                case "Gawat Darurat":
+                    return "bg-red-50 border-red-400 text-red-900";
+                case "Non Emergency":
+                    return "bg-gray-800 border-gray-900 text-white";
+                default:
+                    return "bg-gray-50 border-gray-300 text-gray-800";
+            }
+        }
+
+        function loadData() {
+            loading.classList.remove("hidden");
+            emptyState.classList.add("hidden");
+            errorState.classList.add("hidden");
+            dataContainer.classList.add("hidden");
+            historyList.innerHTML = "";
+
+            fetch(API_URL)
+                .then(res => res.json())
+                .then(result => {
+                    const data = result.data || [];
+
+                    loading.classList.add("hidden");
+                    totalRecords.innerText = data.length;
+
+                    if (data.length === 0) {
+                        emptyState.classList.remove("hidden");
+                        return;
+                    }
+
+                    data.forEach(item => {
+                        const triaseClass = getTriaseClass(item.triase);
+
+                        historyList.innerHTML += `
+            <div class="border-l-8 rounded-xl p-4 shadow-sm hover:shadow-md transition ${triaseClass}">
+              
+              <div class="flex justify-between items-center mb-2">
+                <span class="text-xs font-semibold px-2 py-1 rounded bg-white/70 text-gray-800">
+                  No: ${item.no}
+                </span>
+                <span class="text-xs opacity-80 hidden">
+                  ${formatJamPeriksa(item.jam_periksa)}
+                </span>
+              </div>
+
+              <h3 class="font-bold mb-1">
+                ${item.nama_pasien}
+              </h3>
+
+              <p class="text-sm mb-3 opacity-90">
+                ${item.rencana_tindak_lanjut}
+              </p>
+
+              <span class="inline-block text-xs font-bold px-3 py-1 rounded-full bg-black/10">
+                ${item.triase}
+              </span>
+
+            </div>
+          `;
+                    });
+
+                    dataContainer.classList.remove("hidden");
+                })
+                .catch(err => {
+                    loading.classList.add("hidden");
+                    errorState.classList.remove("hidden");
+                    console.error(err);
+                });
+        }
+
+        // Load pertama
+        loadData();
+    </script>
+
+</body>
+
+</html>
