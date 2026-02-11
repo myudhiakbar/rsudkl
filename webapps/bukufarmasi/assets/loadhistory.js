@@ -230,8 +230,8 @@ function editData(id, currentStatus = "Belum") {
 
 // ==== ENTRY POINT ====
 document.addEventListener("DOMContentLoaded", () => {
-	loadComponent("nav-placeholder", "rsudkl/webapps/bukufarmasi/components/nav.html");
-	loadComponent("footer-placeholder", "rsudkl/webapps/bukufarmasi/components/footer.html");
+	loadComponent("nav-placeholder", "components/nav.html");
+	loadComponent("footer-placeholder", "components/footer.html");
 
 	loadHistory();
 	updateNowDateTime();
