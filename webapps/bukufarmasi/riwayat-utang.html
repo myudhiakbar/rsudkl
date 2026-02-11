@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Buku Utang Farmasi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+
+<!-- <body data-page="riwayat"> -->
+
+<body class="text-gray-800">
+    <!-- NAVBAR AKAN DIMUAT DI SINI -->
+    <nav id="nav-placeholder"></nav>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="flex justify-center px-4">
+            <div class="w-full max-w-6xl">
+
+                <div class="form-container p-6 mb-8">
+                    <div class="header-gradient text-white rounded-t-xl p-4 -mx-6 -mt-6 mb-6">
+                        <h2 class="text-lg font-bold">
+                            <i class="fas fa-history mr-2"></i>Riwayat Terakhir
+                        </h2>
+                    </div>
+
+                    <!-- HISTORY LIST -->
+                    <div id="historyList" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                        <div class="text-center py-8 text-gray-500 col-span-full">
+                            <i class="fas fa-clipboard-list text-3xl mb-3"></i>
+                            <p>Belum ada transaksi</p>
+                            <p class="text-sm">Transaksi yang disimpan akan muncul di sini</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER AKAN DIMUAT DI SINI -->
+        <footer id="footer-placeholder"></footer>
+    </main>
+
+    <script src="assets/loadhistory.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+
+</html>
