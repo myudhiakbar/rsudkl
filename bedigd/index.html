@@ -4,11 +4,386 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Informasi Data Pasien IGD RSKL</title>
+    <title>Sistem Informasi Data Pasien IGD RSUD KL</title>
 
-    <!-- Font Awesome tetap -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="assets/style.css">
+
+    <style>
+        /* ===== CSS STATIS - KOMPATIBEL TV COOCAA/WEBVIEW LAMA ===== */
+        /* TANPA FLEX, TANPA GRID, TANPA PROPERTI MODERN */
+
+        /* RESET & GLOBAL */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background-image: linear-gradient(rgba(247, 250, 252, 0.85), rgba(247, 250, 252, 0.85)), url("assets/beranda1.png");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        /* LAYOUT UTAMA - FONT DIPERBESAR UNTUK TV */
+        .tv-wrapper {
+            width: 100%;
+            padding: 2rem 2.5rem;
+        }
+
+        /* HEADER - TEXT-ALIGN CENTER (PALING AMAN) */
+        .header {
+            margin-top: 1.5rem;
+            margin-bottom: 3rem;
+            padding: 0.5rem;
+            text-align: center;
+        }
+
+        /* MAIN CARD */
+        .main-card {
+            background: #ffffff;
+            border-radius: 1.2rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+            overflow: hidden;
+            width: 100%;
+        }
+
+        /* CARD HEADER - PAKAI TABLE UNTUK VERTICAL CENTER */
+        .card-header {
+            padding: 2rem 2.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: table;
+            width: 100%;
+        }
+
+        .header h1 {
+            font-size: 5rem;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin-bottom: 0.75rem;
+            line-height: 1.2;
+            word-break: break-word;
+        }
+
+        .header p {
+            font-size: 3.5rem;
+            color: #6b7280;
+            margin-top: 0.75rem;
+        }
+
+        .total-text {
+            font-size: 3rem;
+            color: #6b7280;
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+            width: 100%;
+        }
+
+        .total-text span {
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .badge-no {
+            text-align: left;
+            font-size: 1.4rem;
+            font-weight: 600;
+            padding: 0.4rem 1rem;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 0.5rem;
+            color: #1f2937;
+            white-space: nowrap;
+        }
+
+        .badge-time {
+            text-align: right;
+            font-size: 1.4rem;
+            opacity: 0.8;
+        }
+
+        .patient-name {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin: 0.5rem 0 0.25rem;
+            line-height: 1.3;
+            text-align: left;
+        }
+
+        .tindak-lanjut {
+            font-size: 1.4rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+            text-align: left;
+        }
+
+        .triase-tag {
+            display: inline-block;
+            font-size: 1.3rem;
+            font-weight: 700;
+            padding: 0.5rem 1.5rem;
+            border-radius: 100px;
+            background: rgba(0, 0, 0, 0.08);
+            text-align: left;
+        }
+
+        /* FOOTER */
+        .footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e5e7eb;
+            text-align: center;
+            font-size: 2rem;
+            color: #6b7280;
+        }
+
+        /* STATE SCREEN */
+        .state-screen {
+            padding: 4rem 2rem;
+            text-align: center;
+            display: block;
+            width: 100%;
+        }
+
+        .state-icon {
+            font-size: 5rem;
+            color: #9ca3af;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+        }
+
+        .state-title {
+            font-size: 2.5rem;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.75rem;
+        }
+
+        .state-desc {
+            font-size: 2rem;
+            color: #6b7280;
+            margin-bottom: 2rem;
+        }
+
+        /* BUTTON - TANPA FLEX */
+        .btn {
+            background: #2563eb;
+            color: #ffffff;
+            font-size: 1.8rem;
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 0.75rem;
+            display: inline-block;
+            cursor: pointer;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .btn i {
+            margin-right: 0.75rem;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .btn:hover {
+            background: #1d4ed8;
+        }
+
+        /* DATA GRID - FLOAT SYSTEM (PALING AMAN) */
+        .data-grid {
+            padding: 2rem;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .grid-container {
+            width: 100%;
+            overflow: hidden;
+        }
+
+        /* PATIENT CARD - FLOAT LAYOUT */
+        .patient-card {
+            border-left-width: 8px;
+            border-left-style: solid;
+            border-radius: 1.5rem;
+            padding: 2rem;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            width: 100%;
+            display: block;
+        }
+
+        /* FLOAT GRID UNTUK TV */
+        @media (min-width: 768px) {
+            .patient-card {
+                float: left;
+                width: 48%;
+                margin-right: 2%;
+            }
+
+            .patient-card:nth-child(even) {
+                margin-right: 0;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .patient-card {
+                width: 32%;
+                margin-right: 1.33%;
+            }
+
+            .patient-card:nth-child(3n) {
+                margin-right: 0;
+            }
+        }
+
+        @media (min-width: 1280px) {
+            .patient-card {
+                width: 24%;
+                margin-right: 1.33%;
+            }
+
+            .patient-card:nth-child(4n) {
+                margin-right: 0;
+            }
+        }
+
+        @media (min-width: 1536px) {
+            .patient-card {
+                width: 19%;
+                margin-right: 1.25%;
+            }
+
+            .patient-card:nth-child(5n) {
+                margin-right: 0;
+            }
+        }
+
+        /* CARD ROW - PAKAI TABLE */
+        .card-row {
+            display: table;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .card-row span {
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        /* TRIAGE COLORS */
+        .triase-green {
+            background-color: #f0fdf4;
+            border-left-color: #4ade80;
+            color: #14532d;
+        }
+
+        .triase-yellow {
+            background-color: #fefce8;
+            border-left-color: #facc15;
+            color: #713f12;
+        }
+
+        .triase-red {
+            background-color: #fff1f2;
+            border-left-color: #f87171;
+            color: #7f1d1d;
+        }
+
+        .triase-gray {
+            background-color: #1f2937;
+            border-left-color: #111827;
+            color: #ffffff;
+        }
+
+        .triase-gray .badge-no,
+        .triase-gray .patient-name,
+        .triase-gray .tindak-lanjut {
+            color: #ffffff;
+        }
+
+        .triase-default {
+            background-color: #f9fafb;
+            border-left-color: #d1d5db;
+            color: #1f2937;
+        }
+
+        /* LOADING SPINNER */
+        .loading {
+            width: 64px;
+            height: 64px;
+            border: 6px solid rgba(59, 130, 246, 0.2);
+            border-radius: 50%;
+            border-top-color: #2563eb;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 2rem;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .fa-heart {
+            color: #ef4444;
+            margin: 0 0.25rem;
+            display: inline-block;
+        }
+
+        /* UTILITIES */
+        .hidden {
+            display: none;
+        }
+
+        /* RESPONSIVE MOBILE */
+        @media (max-width: 767px) {
+
+            /* FIX: harus .footer bukan footer */
+            .footer {
+                font-size: 1.1rem;
+            }
+
+            .header h1 {
+                font-size: 1.6rem;
+            }
+
+            .header p {
+                font-size: 1.2rem;
+            }
+
+            .total-text {
+                font-size: 1.4rem;
+            }
+
+            .badge-no {
+                font-size: 1rem;
+            }
+
+            .badge-time {
+                font-size: 1rem;
+            }
+
+            .patient-name {
+                font-size: 1.2rem;
+            }
+
+            .tindak-lanjut {
+                font-size: 1.1rem;
+            }
+
+            .triase-tag {
+                font-size: 1rem;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -30,7 +405,7 @@
                 <!-- Loading -->
                 <div id="loading" class="state-screen">
                     <div class="loading"></div>
-                    <p class="state-desc" style="color:#4b5563;">Memuat data...</p>
+                    <p class="state-desc">Memuat data...</p>
                 </div>
 
                 <!-- Empty -->
@@ -62,7 +437,190 @@
         </footer>
     </div>
 
-    <script src="assets/script.js"></script>
+    <script>
+        // ===== VERSI ES5 - KOMPATIBEL TV COOCAA/WEBVIEW LAMA =====
+        // DENGAN FALLBACK JSONP UNTUK BROWSER TANPA FETCH
+
+        var API_URL = "https://script.google.com/macros/s/AKfycbxPjw0kwrhTgHEQ6vQboCMuhmbBwGixA-jzUCq0SQ6LXPKDyZtAWbA-yAjB9DLUkgsO/exec";
+        var API_URL_JSONP = API_URL + "?callback=?"; // Untuk fallback
+
+        var loading = document.getElementById("loading");
+        var emptyState = document.getElementById("emptyState");
+        var errorState = document.getElementById("errorState");
+        var dataContainer = document.getElementById("dataContainer");
+        var historyList = document.getElementById("historyList");
+        var totalRecords = document.getElementById("totalRecords");
+
+        // Jam & Tanggal
+        function updateHeaderDateTime() {
+            var now = new Date();
+            var hari = now.toLocaleDateString("id-ID", { weekday: "long" });
+            var tanggal = now.toLocaleDateString("id-ID", {
+                day: "2-digit",
+                month: "long",
+                year: "numeric"
+            });
+            var jam = now.toLocaleTimeString("id-ID", {
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit"
+            }).replace(/\./g, ":");
+
+            document.getElementById("currentDateTime").textContent = hari + ", " + tanggal + " jam " + jam + " WIB";
+        }
+        setInterval(updateHeaderDateTime, 1000);
+        updateHeaderDateTime();
+
+        // Tahun otomatis
+        document.getElementById("year").textContent = new Date().getFullYear();
+
+        function formatJamPeriksa(value) {
+            if (!value) return "-";
+            if (typeof value === "number") {
+                var date = new Date(Math.round((value - 25569) * 86400 * 1000));
+                return date.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" }) + " WIB";
+            }
+            if (!isNaN(Date.parse(value))) {
+                var date = new Date(value);
+                return date.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" }) + " WIB";
+            }
+            if (typeof value === "string" && value.indexOf(":") !== -1) {
+                return value.substring(0, 5) + " WIB";
+            }
+            return value;
+        }
+
+        function getTriaseClass(triase) {
+            switch (triase) {
+                case "Tidak Gawat dan Tidak Darurat":
+                    return "triase-green";
+                case "Gawat Tapi Tidak Darurat":
+                    return "triase-yellow";
+                case "Gawat Darurat":
+                    return "triase-red";
+                case "Non Emergency":
+                    return "triase-gray";
+                default:
+                    return "triase-default";
+            }
+        }
+
+        // FUNGSI UNTUK MEMPROSES DATA (DIGUNAKAN FETCH MAUPUN JSONP)
+        function processData(result) {
+            var data = result.data || [];
+            var validPatients = [];
+
+            // Filter valid patients (ES5 style)
+            for (var i = 0; i < data.length; i++) {
+                var item = data[i];
+                if (item.nama_pasien && item.nama_pasien.toString().trim() !== "") {
+                    validPatients.push(item);
+                }
+            }
+
+            loading.classList.add("hidden");
+            totalRecords.innerText = validPatients.length;
+
+            if (validPatients.length === 0) {
+                emptyState.classList.remove("hidden");
+                return;
+            }
+
+            // Clear history list
+            historyList.innerHTML = "";
+
+            // Loop data (ES5 style)
+            for (var i = 0; i < validPatients.length; i++) {
+                var item = validPatients[i];
+                var triaseClass = getTriaseClass(item.triase);
+
+                var card = document.createElement("div");
+                card.className = "patient-card " + triaseClass;
+
+                var cardHTML = '<div class="card-row">' +
+                    '<span class="badge-no">No: ' + (item.no || '') + '</span>' +
+                    '<span class="badge-time hidden">' + formatJamPeriksa(item.jam_periksa) + '</span>' +
+                    '</div>' +
+                    '<h3 class="patient-name">' + (item.nama_pasien || '') + '</h3>' +
+                    '<p class="tindak-lanjut">' + (item.rencana_tindak_lanjut || '') + '</p>' +
+                    '<span class="triase-tag">' + (item.triase || '') + '</span>';
+
+                card.innerHTML = cardHTML;
+                historyList.appendChild(card);
+            }
+
+            dataContainer.classList.remove("hidden");
+        }
+
+        function showError() {
+            loading.classList.add("hidden");
+            errorState.classList.remove("hidden");
+        }
+
+        // FALLBACK JSONP UNTUK BROWSER TANPA FETCH
+        function loadDataWithJSONP() {
+            var script = document.createElement('script');
+            var callbackName = 'jsonp_callback_' + new Date().getTime();
+
+            // Buat fungsi global untuk callback
+            window[callbackName] = function (result) {
+                // Bersihkan setelah digunakan
+                delete window[callbackName];
+                if (script.parentNode) {
+                    document.body.removeChild(script);
+                }
+                processData(result);
+            };
+
+            // Timeout handler
+            var timeout = setTimeout(function () {
+                if (window[callbackName]) {
+                    delete window[callbackName];
+                    if (script.parentNode) {
+                        document.body.removeChild(script);
+                    }
+                    showError();
+                }
+            }, 15000); // 15 detik timeout
+
+            // Gunakan callback di URL
+            script.src = API_URL + '?callback=' + callbackName;
+            document.body.appendChild(script);
+        }
+
+        // LOAD DATA DENGAN FALLBACK
+        function loadData() {
+            loading.classList.remove("hidden");
+            emptyState.classList.add("hidden");
+            errorState.classList.add("hidden");
+            dataContainer.classList.add("hidden");
+            historyList.innerHTML = "";
+
+            // CEK APAKAH FETCH TERSEDIA
+            if (typeof fetch !== 'undefined') {
+                // GUNAKAN FETCH DENGAN ES5 SYNTAX
+                fetch(API_URL)
+                    .then(function (response) {
+                        return response.json();
+                    })
+                    .then(function (result) {
+                        processData(result);
+                    })
+                    .catch(function (err) {
+                        console.error('Fetch error, mencoba JSONP fallback:', err);
+                        loadDataWithJSONP(); // Fallback ke JSONP
+                    });
+            } else {
+                // LANGSUNG GUNAKAN JSONP JIKA FETCH TIDAK ADA
+                console.log('Fetch tidak didukung, menggunakan JSONP fallback');
+                loadDataWithJSONP();
+            }
+        }
+
+        // LOAD PERTAMA
+        loadData();
+        setInterval(loadData, 15000);
+    </script>
 </body>
 
 </html>

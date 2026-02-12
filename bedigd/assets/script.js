@@ -143,7 +143,7 @@ function processData(result) {
 			'<span class="badge-no">No: ' +
 			(item.no || "") +
 			"</span>" +
-			'<span class="badge-time hidden">' +
+			'<span class="badge-time">' +
 			formatJamPeriksa(item.jam_periksa) +
 			"</span>" +
 			"</div>" +
@@ -199,4 +199,4 @@ function loadData() {
 
 // Load pertama
 loadData();
-setInterval(loadData, 10000); // refresh tiap 10 detik
+setInterval(loadData, 15000); // refresh tiap 10 detik

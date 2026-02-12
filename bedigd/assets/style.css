@@ -19,13 +19,6 @@ body {
 	background-attachment: fixed;
 }
 
-/* Disable fixed background for mobile (better performance) */
-@media (max-width: 768px) {
-	body {
-		background-attachment: scroll;
-	}
-}
-
 /* ================================
    LAYOUT
 ================================ */
@@ -75,16 +68,23 @@ body {
 }
 
 .card-header {
-	padding: 2rem;
+	padding: 32px;
 	border-bottom: 1px solid #e5e7eb;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+	display: table;
+	width: 100%;
+}
+
+/* Tambahan karena ada di HTML */
+.data-card {
+	width: 100%;
 }
 
 .total-text {
 	font-size: 4rem;
 	color: #6b7280;
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
 }
 
 .total-text span {
@@ -147,65 +147,31 @@ body {
 }
 
 /* ================================
-   GRID SYSTEM
-================================ */
-.data-grid {
-	padding: 2rem;
-}
-
-.grid-container {
-	display: grid;
-	grid-template-columns: repeat(1, 1fr);
-	gap: 2rem;
-}
-
-/* Tablet */
-@media (min-width: 640px) {
-	.grid-container {
-		grid-template-columns: repeat(2, 1fr);
-	}
-}
-
-/* Large Screen / TV */
-@media (min-width: 1536px) {
-	.grid-container {
-		grid-template-columns: repeat(4, 1fr);
-	}
-}
-
-/* ================================
    PATIENT CARD
 ================================ */
 .patient-card {
 	border-left: 8px solid;
-	border-radius: 1rem;
-	padding: 1.5rem;
-	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-	display: flex;
-	flex-direction: column;
-	gap: 0.5rem;
-	transition:
-		transform 0.2s ease,
-		box-shadow 0.2s ease;
+	border-radius: 16px;
+	padding: 24px;
+	background-color: #ffffff;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+	display: block;
+	margin-bottom: 20px;
 }
 
-.patient-card:hover {
-	box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-	transform: translateY(-2px);
-}
-
-.patient-card:active {
-	transform: scale(0.98);
-}
-
-/* Card Content */
 .card-row {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+	display: table;
+	width: 100%;
+	margin-bottom: 10px;
+}
+
+.card-row span {
+	display: table-cell;
+	vertical-align: middle;
 }
 
 .badge-no {
+	text-align: left;
 	font-size: 1.6rem;
 	font-weight: 600;
 	padding: 0.25rem 0.75rem;
@@ -215,7 +181,8 @@ body {
 }
 
 .badge-time {
-	font-size: 0.95rem;
+	text-align: right;
+	font-size: 1.6rem;
 	opacity: 0.8;
 }
 
@@ -233,6 +200,7 @@ body {
 	line-height: 1.5;
 }
 
+/* align-self tidak berfungsi karena parent bukan flex */
 .triase-tag {
 	display: inline-block;
 	font-size: 1.5rem;
@@ -240,7 +208,6 @@ body {
 	padding: 0.4rem 1.2rem;
 	border-radius: 9999px;
 	background: rgba(0, 0, 0, 0.08);
-	align-self: flex-start;
 }
 
 /* ================================
@@ -319,39 +286,33 @@ body {
 }
 
 @media (max-width: 767px) {
-	footer {
-		font-size: 0.9rem;
+	/* FIX: harus .footer bukan footer */
+	.footer {
+		font-size: 1.1rem;
 	}
 
 	.header h1 {
 		font-size: 1.6rem;
 	}
-
 	.header p {
 		font-size: 1.2rem;
 	}
-
 	.total-text {
 		font-size: 1.4rem;
 	}
-
 	.badge-no {
 		font-size: 1rem;
 	}
-
+	.badge-time {
+		font-size: 1rem;
+	}
 	.patient-name {
 		font-size: 1.2rem;
 	}
-
 	.tindak-lanjut {
 		font-size: 1.1rem;
 	}
-
 	.triase-tag {
 		font-size: 1rem;
-	}
-
-	.footer {
-		font-size: 1.1rem;
 	}
 }
