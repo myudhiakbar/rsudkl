@@ -70,42 +70,20 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         // ===== FORMAT TANGGAL =====
-        function formatTanggalIndonesia(tanggalString) {
-            const date = new Date(tanggalString);
-            if (isNaN(date)) return tanggalString;
-
-            return date.toLocaleDateString("id-ID", {
-                day: "2-digit",
-                month: "long",
-                year: "numeric",
-            });
-        }
-
         function updateNowDateTime() {
             const el = document.getElementById("nowDateTime");
             if (!el) return;
-            const now = new Date();
-            const bulan = [
-                "Januari",
-                "Februari",
-                "Maret",
-                "April",
-                "Mei",
-                "Juni",
-                "Juli",
-                "Agustus",
-                "September",
-                "Oktober",
-                "November",
-                "Desember",
-            ];
-            const tgl = now.getDate();
-            const bln = bulan[now.getMonth()];
-            const thn = now.getFullYear();
-            const jam = String(now.getHours()).padStart(2, "0");
-            const menit = String(now.getMinutes()).padStart(2, "0");
-            const detik = String(now.getSeconds()).padStart(2, "0");
-            el.textContent = `${tgl} ${bln} ${thn}, ${jam}:${menit}:${detik} WIB`;
+
+            el.textContent =
+                new Date().toLocaleString("id-ID", {
+                    timeZone: "Asia/Jakarta",
+                    day: "2-digit",
+                    month: "long",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                }) + " WIB";
         }
 
         const WEB_APP_URL =

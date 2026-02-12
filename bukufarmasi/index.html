@@ -130,7 +130,17 @@
                             <label for="packageSelect" class="block text-gray-700 font-medium mb-2">
                                 <i class="fas fa-boxes mr-2 text-blue-500"></i>Paket Alkes (Opsional)
                             </label>
-                            <select id="packageSelect"
+
+                            <div class="relative">
+                                <input type="text" id="packageInput" placeholder="Ketik atau pilih paket..."
+                                    autocomplete="off"
+                                    class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <div id="packageSuggestions"
+                                    class="absolute z-10 w-full bg-white border border-gray-200 rounded-lg shadow-lg mt-1 hidden max-h-60 overflow-y-auto">
+                                </div>
+                            </div>
+
+                            <!-- <select id="packageSelect"
                                 class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 <option value="">-- Pilih Paket --</option>
                                 <option value="infus-dewasa">Paket Infus Dewasa</option>
@@ -139,7 +149,7 @@
                                 <option value="inhalasi-dewasa">Paket Inhalasi Dewasa</option>
                                 <option value="inhalasi-anak">Paket Inhalasi Anak</option>
                                 <option value="jahit-luka">Paket Hecting</option>
-                            </select>
+                            </select> -->
                             <p class="text-sm text-gray-500 mt-1">Pilih paket untuk menambahkan item alkes secara
                                 otomatis</p>
                         </div>
@@ -249,36 +259,34 @@
     <!-- <script src="assets/main.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        // ===== FORMAT TANGGAL =====
         function updateNowDateTime() {
             const el = document.getElementById("nowDateTime");
             if (!el) return;
-            const now = new Date();
-            const bulan = [
-                "Januari",
-                "Februari",
-                "Maret",
-                "April",
-                "Mei",
-                "Juni",
-                "Juli",
-                "Agustus",
-                "September",
-                "Oktober",
-                "November",
-                "Desember",
-            ];
-            const tgl = now.getDate();
-            const bln = bulan[now.getMonth()];
-            const thn = now.getFullYear();
-            const jam = String(now.getHours()).padStart(2, "0");
-            const menit = String(now.getMinutes()).padStart(2, "0");
-            const detik = String(now.getSeconds()).padStart(2, "0");
-            el.textContent = `${tgl} ${bln} ${thn}, ${jam}:${menit}:${detik} WIB`;
+
+            el.textContent =
+                new Date().toLocaleString("id-ID", {
+                    timeZone: "Asia/Jakarta",
+                    day: "2-digit",
+                    month: "long",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                }) + " WIB";
         }
 
-        function updateInfoDate(val) {
-            const d = new Date(val);
-            infoDate.textContent = d.toLocaleDateString("id-ID", {
+        function updateInfoDate(value) {
+            if (!infoDate) return;
+
+            const date = new Date(value);
+            if (isNaN(date)) {
+                infoDate.textContent = "-";
+                return;
+            }
+
+            infoDate.textContent = date.toLocaleDateString("id-ID", {
+                timeZone: "Asia/Jakarta",
                 day: "2-digit",
                 month: "long",
                 year: "numeric",
@@ -288,14 +296,14 @@
         const WEB_APP_URL =
             "https://script.google.com/macros/s/AKfycbwnsxv605i4E3R7OOF7EdZCcX97o_MyIyB_us5cgEmm_FhUVM6txENGUxMa1UkDd-Qq/exec";
 
-        /* ================= GLOBAL ELEMENTS ================= */
+        /* === GLOBAL ELEMENTS === */
         const loanForm = document.getElementById("loanForm");
         const transactionDate = document.getElementById("transactionDate");
         const patientName = document.getElementById("patientName");
         const staffName = document.getElementById("staffName");
         const unitSelect = document.getElementById("selectedUnit");
         // const selectedUnit = document.getElementById("selectedUnit");
-        const packageSelect = document.getElementById("packageSelect");
+        // const packageSelect = document.getElementById("packageSelect");
         const resetFormBtn = document.getElementById("resetForm");
 
         const infoDate = document.getElementById("infoDate");
@@ -303,7 +311,7 @@
         const infoUnit = document.getElementById("infoUnit");
         const infoAlkes = document.getElementById("infoAlkes");
 
-        /* ================= UNIT ALKES ================= */
+        /* === UNIT ALKES === */
         // Pilihan unit
         // const unitOptions = document.querySelectorAll(".unit-option");
         // unitOptions.forEach((option) => {
@@ -321,79 +329,132 @@
         // 	});
         // });
 
-        /* ================= PACKAGE ALKES ================= */
-        packageSelect.addEventListener("change", function () {
-            if (!this.value) return;
+        /* === PACKAGE AUTOCOMPLETE === */
+        const packageInput = document.getElementById("packageInput");
+        const suggestionsBox = document.getElementById("packageSuggestions");
 
-            const packageMap = {
-                "infus-dewasa": "infus dewasa",
-                "infus-anak": "infus anak",
-                "injeksi-lambung": "injeksi lambung",
-                "jahit-luka": "jahit luka",
-            };
-            addPackageItems(packageMap[this.value]);
+        const packageData = {
+            "infus-dewasa": "Paket Infus Dewasa",
+            "infus-anak": "Paket Infus Anak",
+            "injeksi-lambung": "Paket Injeksi Lambung",
+            "inhalasi-dewasa": "Paket Inhalasi Dewasa",
+            "inhalasi-anak": "Paket Inhalasi Anak",
+            "jahit-luka": "Paket Hecting"
+        };
+
+        // Render suggestion list
+        function showSuggestions(value = "") {
+            suggestionsBox.innerHTML = "";
+
+            const filtered = Object.entries(packageData).filter(([key, label]) =>
+                label.toLowerCase().includes(value.toLowerCase())
+            );
+
+            if (!filtered.length) {
+                suggestionsBox.classList.add("hidden");
+                return;
+            }
+
+            filtered.forEach(([key, label]) => {
+                const item = document.createElement("div");
+                item.className = "px-4 py-2 cursor-pointer hover:bg-blue-50";
+                item.textContent = label;
+
+                item.onclick = () => {
+                    packageInput.value = label;
+                    suggestionsBox.classList.add("hidden");
+                    addPackageItems(key);
+                };
+
+                suggestionsBox.appendChild(item);
+            });
+
+            suggestionsBox.classList.remove("hidden");
+        }
+
+
+        // Event Saat klik / focus → tampilkan semua paket
+        packageInput.addEventListener("focus", function () {
+            showSuggestions(""); // tampilkan semua
         });
 
+        // Event ketika mengetik
+        packageInput.addEventListener("input", function () {
+            showSuggestions(this.value);
+        });
+
+        // Klik di luar → tutup dropdown
+        document.addEventListener("click", function (e) {
+            if (!e.target.closest("#packageInput")) {
+                suggestionsBox.classList.add("hidden");
+            }
+        });
+
+        /* ==== EVENT PACKAGE ALKES DROPDOWN MENU ==== */
+        // packageSelect.addEventListener("change", function () {
+        //     if (!this.value) return;
+        //     addPackageItems(this.value);
+        // });
+
+        /* === ADD PACKAGE ALKES === */
         function addPackageItems(packageType) {
             const container = document.getElementById("alkesContainer");
+            if (!container) return;
+
             container.innerHTML = "";
 
-            let items = [];
-
-            if (packageType === "infus dewasa") {
-                items = [
+            const packages = {
+                "infus-dewasa": [
                     { name: "Abbocath 22", qty: 1 },
                     { name: "Abbocath 20", qty: 1 },
                     { name: "Macro Set", qty: 1 },
                     { name: "NaCl 0,9% 500 ml", qty: 1 },
-                ];
-            } else if (packageType === "infus anak") {
-                items = [
+                ],
+                "infus-anak": [
                     { name: "Abbocath 24", qty: 1 },
                     { name: "Abbocath 26", qty: 1 },
                     { name: "Macro Set", qty: 1 },
                     { name: "Spalk Anak", qty: 1 },
                     { name: "Kaen 3B 500 ml", qty: 1 },
-                ];
-            } else if (packageType === "injeksi lambung") {
-                items = [
+                ],
+                "injeksi-lambung": [
                     { name: "Abbocath 22", qty: 1 },
                     { name: "Macro Set", qty: 1 },
                     { name: "Omeprazole 40 mg IV", qty: 1 },
-                    { name: "Ondansentron 4 mg IV", qty: 1 },
+                    { name: "Ondansetron 4 mg IV", qty: 1 },
                     { name: "Spuit 5 ml", qty: 1 },
                     { name: "Spuit 3 ml", qty: 1 },
-                ];
-            } else if (packageType === "inhalasi-dewasa") {
-                items = [
+                ],
+                "inhalasi-dewasa": [
                     { name: "Nebulizer Mask Dewasa", qty: 1 },
                     { name: "Spuit 5 ml", qty: 1 },
                     { name: "Meprovent", qty: 1 },
                     { name: "Pulmicort", qty: 1 },
-                ];
-            } else if (packageType === "inhalasi-anak") {
-                items = [
+                ],
+                "inhalasi-anak": [
                     { name: "Nebulizer Mask Anak", qty: 1 },
                     { name: "Spuit 5 ml", qty: 1 },
                     { name: "Meprovent", qty: 1 },
                     { name: "Pulmicort", qty: 1 },
-                ];
-            } else if (packageType === "jahit luka") {
-                items = [
+                ],
+                "jahit-luka": [
                     { name: "Lidocain IV", qty: 2 },
                     { name: "Spuit 3 ml", qty: 1 },
                     { name: "Polypropilen 3/0 TS 27", qty: 1 },
                     { name: "Underpad", qty: 1 },
                     { name: "Daryantul", qty: 1 },
                     { name: "NaCl 0,9% 500 ml", qty: 1 },
-                ];
-            }
+                ],
+            };
 
-            items.forEach((item) => addAlkesField(item.name, item.qty));
+            const items = packages[packageType];
+            if (!items) return;
+
+            items.forEach(item => addAlkesField(item.name, item.qty));
             updateAlkesInfo();
         }
 
-        /* ================= TAMBAH ALKES ================= */
+        /* === TAMBAH ALKES === */
         document
             .getElementById("addAlkes")
             .addEventListener("click", () => addAlkesField());
@@ -459,7 +520,7 @@
             });
         }
 
-        /* ================= INFO PANEL ================= */
+        /* === INFO PANEL === */
         function updateAlkesInfo() {
             const list = infoAlkes;
             const names = document.querySelectorAll(".alkes-name-input");
@@ -478,7 +539,7 @@
                 list.innerHTML = '<li class="italic text-gray-500">Belum ada data</li>';
         }
 
-        /* ================= RESET ================= */
+        /* === RESET === */
         function performFormReset() {
             loanForm.reset();
 
@@ -523,7 +584,7 @@
             });
         };
 
-        /* ================= CREATE ================= */
+        /* === CREATE === */
         loanForm.onsubmit = (e) => {
             e.preventDefault();
 
@@ -597,7 +658,7 @@
             });
         };
 
-        /* ================= EDIT ================= */
+        /* === EDIT === */
         function editData(id) {
             Swal.fire({
                 title: "Tandai Sudah Terinput?",
@@ -649,7 +710,7 @@
             });
         }
 
-        /* ================= DELETE ================= */
+        /* === DELETE === */
         function deleteData(id) {
             Swal.fire({
                 title: "Hapus data?",
@@ -696,7 +757,7 @@
             });
         }
 
-        /* ================= READ ================= */
+        /* === READ === */
         function formatTanggalIndonesia(tanggalString) {
             const date = new Date(tanggalString);
             if (isNaN(date)) return tanggalString; // fallback jika format tidak dikenali
@@ -792,19 +853,31 @@
                 });
         }
 
-        /* ================= INIT ================= */
+        /* === INIT === */
         document.addEventListener("DOMContentLoaded", () => {
             const today = new Date().toISOString().split("T")[0];
+
+            // Set tanggal hari ini
             transactionDate.value = today;
             updateInfoDate(today);
 
+            // Init komponen
             addAlkesField();
             loadHistory();
+
+            // Start realtime clock
             updateNowDateTime();
             setInterval(updateNowDateTime, 1000);
 
-            patientName.oninput = (e) => (infoPatient.textContent = e.target.value || "-");
-            unitSelect.onchange = (e) => (infoUnit.textContent = e.target.value || "-");
+            // Event binding
+            patientName.oninput = (e) =>
+                (infoPatient.textContent = e.target.value || "-");
+
+            unitSelect.onchange = (e) =>
+                (infoUnit.textContent = e.target.value || "-");
+
+            transactionDate.onchange = (e) =>
+                updateInfoDate(e.target.value);
         });
     </script>
 </body>
