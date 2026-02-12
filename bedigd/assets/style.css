@@ -335,12 +335,16 @@ body {
 		font-size: 1.4rem;
 	}
 
+	.badge-no {
+		font-size: 1rem;
+	}
+
 	.patient-name {
 		font-size: 1.2rem;
 	}
 
 	.tindak-lanjut {
-		font-size: 1.2rem;
+		font-size: 1.1rem;
 	}
 
 	.triase-tag {
@@ -348,6 +352,6 @@ body {
 	}
 
 	.footer {
-		font-size: 0.9rem;
+		font-size: 1.1rem;
 	}
 }
