@@ -199,3 +199,4 @@ function loadData() {
 
 // Load pertama
 loadData();
+setInterval(loadData, 10000); // refresh tiap 10 detik
